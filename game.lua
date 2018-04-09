@@ -13,6 +13,9 @@ physics.start()
 physics.setGravity( 0, 0 )
 
 
+audio.reserveChannels( 1 )
+
+audio.setVolume( 0.5, { channel=1 } )
 local sheetOptions =
 {
     frames =
@@ -67,6 +70,10 @@ local backGroup = display.newGroup()
 local mainGroup = display.newGroup()
 local uiGroup = display.newGroup()
 
+local explosionSound
+local fireSound
+local musicTrack
+
 
 local function updateText()
     livesText.text = "Lives: " .. lives
@@ -105,6 +112,8 @@ end
 
 
 local function fireLaser()
+
+    audio.play( fireSound )
 
     local newLaser = display.newImageRect( mainGroup, objectSheet, 5, 14, 40 )
     physics.addBody( newLaser, "dynamic", { isSensor=true } )
@@ -201,6 +210,9 @@ local function onCollision( event )
            display.remove( obj1 )
            display.remove( obj2 )
 
+
+           audio.play( explosionSound )
+
            for i = #asteroidsTable, 1, -1 do
                if ( asteroidsTable[i] == obj1 or asteroidsTable[i] == obj2 ) then
                    table.remove( asteroidsTable, i )
@@ -218,6 +230,8 @@ local function onCollision( event )
              if ( died == false ) then
                  died = true
 
+
+                 audio.play( explosionSound )
 
                  lives = lives - 1
                  livesText.text = "Lives: " .. lives
@@ -274,8 +288,11 @@ function scene:create( event )
     ship:addEventListener( "tap", fireLaser )
     ship:addEventListener( "touch", dragShip )
 
-end
 
+    explosionSound = audio.loadSound( "audio/explosion.wav" )
+    fireSound = audio.loadSound( "audio/fire.wav" )
+    musicTrack = audio.loadStream( "audio/theme.mp3" )
+end
 -- show()
 function scene:show( event )
 
@@ -290,7 +307,11 @@ function scene:show( event )
       physics.start()
       Runtime:addEventListener( "collision", onCollision )
       gameLoopTimer = timer.performWithDelay( 500, gameLoop, 0 )
-	end
+
+
+
+     audio.play( musicTrack, { channel=1, loops=-1 } )
+  end
 end
 
 
@@ -306,10 +327,10 @@ function scene:hide(event)
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
 
-
-
       Runtime:removeEventListener( "collision", onCollision )
       physics.pause()
+
+      audio.stop( 1 )
       composer.removeScene( "game" )
    end
 end
@@ -320,6 +341,10 @@ end
 -- destroy()
 function scene:destroy( event )
 
+
+  audio.dispose( explosionSound )
+  audio.dispose( fireSound )
+  audio.dispose( musicTrack )
 	local sceneGroup = self.view
 	-- Code here runs prior to the removal of scene's view
 

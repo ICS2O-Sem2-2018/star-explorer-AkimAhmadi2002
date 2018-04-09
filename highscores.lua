@@ -47,7 +47,9 @@ local function saveScores()
 end
 
 
-
+local function gotoMenu()
+	  composer.gotoScene( "menu", { time=800, effect="crossFade" } )
+end
 
 -- -----------------------------------------------------------------------------------
 
@@ -82,6 +84,20 @@ function scene:create( event )
     for i = 1, 10 do
 			  if ( scoresTable[i] ) then
 					  local yPos = 150 + ( i * 56 )
+
+						local rankNum = display.newText( sceneGroup, i .. ")", display.contentCenterX-50, yPos, native.systemFont, 36 )
+						rankNum:setFillColor( 0.8 )
+						rankNum.anchorX = 1
+
+						local thisScore = display.newText( sceneGroup, scoresTable[i], display.contentCenterX-30, yPos, native.systemFont, 36 )
+						thisScore.anchorX = 0
+				end
+		end
+
+    local menuButton = display.newText( sceneGroup, "Menu", display.contentCenterX, 810, native.systemFont, 44 )
+		menuButton:setFillColor( 0.75, 0.78, 1 )
+		menuButton:addEventListener( "tap", gotoMenu )
+end
 function scene:show( event )
 
 	local sceneGroup = self.view
@@ -108,7 +124,7 @@ function scene:hide( event )
 
 	elseif ( phase == "did" ) then
 		-- Code here runs immediately after the scene goes entirely off screen
-
+    composer.removeScene( "highscores" )
 	end
 end
 
