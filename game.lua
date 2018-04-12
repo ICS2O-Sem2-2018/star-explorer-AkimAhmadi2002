@@ -221,7 +221,7 @@ local function onCollision( event )
            end
 
 
-           score = score + 1
+           score = score + 120
            scoreText.text = "Score: " .. score
 
          elseif ( ( obj1.myName == "ship" and obj2.myName == "asteroid" ) or
@@ -271,7 +271,7 @@ function scene:create( event )
 		uiGroup = display.newGroup()
 		sceneGroup:insert( uiGroup )
 
-    local background = display.newImageRect( backGroup, "background.png", 800, 1400 )
+    local background = display.newImageRect( backGroup, "lk.jpg", 800, 1400 )
 		background.x = display.contentCenterX
 		background.y = display.contentCenterY
 
@@ -289,9 +289,9 @@ function scene:create( event )
     ship:addEventListener( "touch", dragShip )
 
 
-    explosionSound = audio.loadSound( "audio/explosion.wav" )
+    explosionSound = audio.loadSound( "audio/Fortnite death.mp3" )
     fireSound = audio.loadSound( "audio/fire.wav" )
-    musicTrack = audio.loadStream( "audio/theme.mp3" )
+    musicTrack = audio.loadStream( "audio/ji.mp3" )
 end
 -- show()
 function scene:show( event )
