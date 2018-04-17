@@ -16,6 +16,10 @@ local function gotoHighScores()
 	  composer.gotoScene( "highscores", { time=800, effect="crossFade" } )
 end
 
+local function gotoLevel()
+	  composer.gotoScene( "Level2Game", { time=800, effect="crossFade" } )
+end
+
 -- -----------------------------------------------------------------------------------
 -- Scene event functions
 -- -----------------------------------------------------------------------------------
@@ -41,8 +45,12 @@ function scene:create( event )
 		local highScoreButton = display.newText( sceneGroup, "High Score", display.contentCenterX, 810, native.systemFont, 44 )
 		highScoreButton:setFillColor( 0.75, 0.78, 1 )
 
+    local LevelButton = display.newText( sceneGroup, "Level", display.contentCenterX, 920, native.systemFont, 44 )
+		LevelButton:setFillColor( 0.75, 0.78, 1 )
+
 		playButton:addEventListener( "tap", gotoGame )
 		highScoreButton:addEventListener( "tap", gotoHighScores )
+		LevelButton:addEventListener( "tap", gotoLevel )
 end
 -- show()
 function scene:show( event )
